@@ -49,11 +49,7 @@ router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if(err) {
             console.log(err);
-            res.render('userError', {
-                statusCode: 500,
-                error: err,
-                user: false
-            })
+            res.redirect('/userError')
         } else res.redirect('/login')
     })
 })

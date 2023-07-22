@@ -17,12 +17,12 @@ const auth = (req, res, next) => {
 }
 
 const auth2 = (req, res, next) => {
-    if(req.session?.user) {
+    if(req.session.user) {
         return next()
     }
     return res.render('userError', {
         statusCode: 403,
-        error: 'You must create a user or sign in.',
+        error: 'You must create a user, sign in or wait a few seconds.',
         user: req.session.user ? true : false
     })
 }
@@ -36,7 +36,7 @@ viewsRouter.get('/', auth , async(req, res) => {
     })
 })
 
-viewsRouter.get('/realTimeProducts', auth2, auth , async(req, res) => {
+viewsRouter.get('/realTimeProducts', auth , auth2 , async(req, res) => {
     res.render('realTimeProducts', {
         title: "Handlebars | Websocket",
         products: await productManager.getProducts(),
@@ -78,7 +78,7 @@ viewsRouter.get('/register', (req, res) => {
 viewsRouter.get('/userError', (req, res) => {
     res.render('userError', {
         title: 'Error',
-        error: 'Do not enter this link.',
+        error: 'An error has ocurred. Do not enter this link.',
         user: req.session.user ? true : false
     })
 })
